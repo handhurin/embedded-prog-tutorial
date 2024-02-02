@@ -18,7 +18,7 @@
  * @brief   I2C instance declaration
  */
 iicInst_t iic_inst = {
-    .iic_ref = TAPAS_I2C_AVIONIC,
+    .iic_ref = I2C_GENERIC,
     .drive_type = IIC_IT_MASTER_DRIVE,
 };
 
@@ -27,7 +27,7 @@ iicInst_t iic_inst = {
  * @brief   UART generic instance declaration
  */
 uartInst_t uart_generic_inst = {
-    .uart_ref = TAPAS_UART_TMTC,
+    .uart_ref = UART_GENERIC,
     .drive_type = UART_POLLING_DRIVE,
     .baud_rate = 115200,
 };
@@ -37,7 +37,7 @@ uartInst_t uart_generic_inst = {
  * @brief   UART print instance declaration
  */
 uartInst_t uart_print_inst = {
-    .uart_ref = TAPAS_UART_PRINT,
+    .uart_ref = UART_PRINT,
     .drive_type = UART_POLLING_DRIVE,
     .baud_rate = 115200,
 };
