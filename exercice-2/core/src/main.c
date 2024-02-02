@@ -9,6 +9,8 @@
 
 /******************************* Include Files *******************************/
 
+#include <stdio.h>
+
 #include "main.h"
 #include "initialisation.h"
 #include "io_instances.h"
@@ -35,6 +37,7 @@ int main(void)
     while (1)
     {
         (void) GpioToggle(&led_inst);
+        printf("Hello \n");
         HAL_Delay(500);
     }
 

@@ -69,7 +69,7 @@ void CheckErrors(uint32_t status, errorsSanction_t sanction)
  * But currently no real fdir has been done. For debugging purposes, Error handler 
  * is just a while loop that hangs processor indefinitly.
  */
-void Error_Handler(void)
+void Error_Handler(void) // cppcheck-suppress misra-c2012-8.7
 {
     __disable_irq();
     while (1)

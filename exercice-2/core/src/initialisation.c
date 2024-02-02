@@ -19,7 +19,7 @@
 /*************************** Functions Declarations **************************/
 
 extern void InitConsole(uartInst_t *uart_inst);
-void InitCache(void);
+static void InitCache(void);
 
 /*************************** Variables Definitions ***************************/
 
@@ -59,7 +59,7 @@ void init(void)
  *  @fn     InitCache(void)
  *  @brief  Function that initialises cache memories if it exists
  */
-void InitCache(void)
+static void InitCache(void)
 {
 #if defined(CACHE_AVAILABLE)
     // Enable Instruction Cache
