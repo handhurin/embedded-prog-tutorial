@@ -11,6 +11,7 @@
 
 #include "main.h"
 #include "initialisation.h"
+#include "io_instances.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -33,7 +34,8 @@ int main(void)
     // Function Core
     while (1)
     {
-        // Do Nothing
+        (void) GpioToggle(&led_inst);
+        HAL_Delay(500);
     }
 
     return 0;
