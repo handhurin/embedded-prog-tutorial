@@ -4,14 +4,14 @@
  * @brief   Error Management functions
  * @date    05/05/2023
  *
- * @copyright Copyright (c) TOLOSAT 2023
+ * @copyright Copyright (c) TOLOSAT & Merlin Kooshmanian 2024
  */
 
 /**
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup errors Errors Management
- * Functions that allows to manage errors in TAPAS
+ * Functions that allows to manage errors
  * @{
  */
 
