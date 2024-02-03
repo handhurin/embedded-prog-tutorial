@@ -39,48 +39,48 @@
 #define USER_BUTTON_EXTI_LINE                           EXTI_LINE_13
 
 /* UART PRINT CONSTANTS */
-#define UART_PRINT                                 USART3
-#define UART_PRINT_IRQ_HANDLER                     USART3_IRQHandler
-#define UART_PRINT_IRQ_NO                          USART3_IRQn
-#define UART_PRINT_CLK_ENABLE()                    __HAL_RCC_USART3_CLK_ENABLE()
-#define UART_PRINT_CLK_DISABLE()                   __HAL_RCC_USART3_CLK_DISABLE()
-#define UART_PRINT_TX_PIN                          GPIO_PIN_8
-#define UART_PRINT_TX_GPIO_PORT                    GPIOD
-#define UART_PRINT_RX_PIN                          GPIO_PIN_9
-#define UART_PRINT_RX_GPIO_PORT                    GPIOD
+#define UART_PRINT                                      USART3
+#define UART_PRINT_IRQ_HANDLER                          USART3_IRQHandler
+#define UART_PRINT_IRQ_NO                               USART3_IRQn
+#define UART_PRINT_CLK_ENABLE()                         __HAL_RCC_USART3_CLK_ENABLE()
+#define UART_PRINT_CLK_DISABLE()                        __HAL_RCC_USART3_CLK_DISABLE()
+#define UART_PRINT_TX_PIN                               GPIO_PIN_8
+#define UART_PRINT_TX_GPIO_PORT                         GPIOD
+#define UART_PRINT_RX_PIN                               GPIO_PIN_9
+#define UART_PRINT_RX_GPIO_PORT                         GPIOD
 
 /* UART GENERIC CONSTANTS */
-#define UART_GENERIC                                USART2
-#define UART_GENERIC_IRQ_HANDLER                    USART2_IRQHandler
-#define UART_GENERIC_IRQ_NO                         USART2_IRQn
-#define UART_GENERIC_CLK_ENABLE()                   __HAL_RCC_USART2_CLK_ENABLE()
-#define UART_GENERIC_CLK_DISABLE()                  __HAL_RCC_USART2_CLK_DISABLE()
-#define UART_GENERIC_TX_PIN                         GPIO_PIN_5
-#define UART_GENERIC_TX_GPIO_PORT                   GPIOD
-#define UART_GENERIC_RX_PIN                         GPIO_PIN_6
-#define UART_GENERIC_RX_GPIO_PORT                   GPIOD
+#define UART_GENERIC                                    USART2
+#define UART_GENERIC_IRQ_HANDLER                        USART2_IRQHandler
+#define UART_GENERIC_IRQ_NO                             USART2_IRQn
+#define UART_GENERIC_CLK_ENABLE()                       __HAL_RCC_USART2_CLK_ENABLE()
+#define UART_GENERIC_CLK_DISABLE()                      __HAL_RCC_USART2_CLK_DISABLE()
+#define UART_GENERIC_TX_PIN                             GPIO_PIN_5
+#define UART_GENERIC_TX_GPIO_PORT                       GPIOD
+#define UART_GENERIC_RX_PIN                             GPIO_PIN_6
+#define UART_GENERIC_RX_GPIO_PORT                       GPIOD
 
 /* I2C GENERIC CONSTANTS */
-#define I2C_GENERIC                               I2C1
-#define I2C_GENERIC_EVT_IRQ_HANDLER               I2C1_EV_IRQHandler
-#define I2C_GENERIC_EVT_IRQ_NO                    I2C1_EV_IRQn
-#define I2C_GENERIC_SCL_PIN                       GPIO_PIN_8
-#define I2C_GENERIC_SCL_GPIO_PORT                 GPIOB
-#define I2C_GENERIC_SDA_PIN                       GPIO_PIN_9
-#define I2C_GENERIC_SDA_GPIO_PORT                 GPIOB
+#define I2C_GENERIC                                     I2C1
+#define I2C_GENERIC_EVT_IRQ_HANDLER                     I2C1_EV_IRQHandler
+#define I2C_GENERIC_EVT_IRQ_NO                          I2C1_EV_IRQn
+#define I2C_GENERIC_SCL_PIN                             GPIO_PIN_8
+#define I2C_GENERIC_SCL_GPIO_PORT                       GPIOB
+#define I2C_GENERIC_SDA_PIN                             GPIO_PIN_9
+#define I2C_GENERIC_SDA_GPIO_PORT                       GPIOB
 
-/* SPI SD CARD CONSTANTS */
-#define SPI_GENERIC                                SPI1
-#define SPI_GENERIC_IRQ_HANDLER                    SPI1_IRQHandler
-#define SPI_GENERIC_IRQ_NO                         SPI1_IRQn
-#define SPI_GENERIC_SCK_PIN                        GPIO_PIN_3
-#define SPI_GENERIC_SCK_GPIO_PORT                  GPIOB
-#define SPI_GENERIC_MISO_PIN                       GPIO_PIN_4
-#define SPI_GENERIC_MISO_GPIO_PORT                 GPIOB
-#define SPI_GENERIC_MOSI_PIN                       GPIO_PIN_5
-#define SPI_GENERIC_MOSI_GPIO_PORT                 GPIOB
-#define SPI_GENERIC_CS_PIN                         GPIO_PIN_4
-#define SPI_GENERIC_CS_GPIO_PORT                   GPIOA
+/* SPI GENERIC CONSTANTS */
+#define SPI_GENERIC                                     SPI1
+#define SPI_GENERIC_IRQ_HANDLER                         SPI1_IRQHandler
+#define SPI_GENERIC_IRQ_NO                              SPI1_IRQn
+#define SPI_GENERIC_SCK_PIN                             GPIO_PIN_3
+#define SPI_GENERIC_SCK_GPIO_PORT                       GPIOB
+#define SPI_GENERIC_MISO_PIN                            GPIO_PIN_4
+#define SPI_GENERIC_MISO_GPIO_PORT                      GPIOB
+#define SPI_GENERIC_MOSI_PIN                            GPIO_PIN_5
+#define SPI_GENERIC_MOSI_GPIO_PORT                      GPIOB
+#define SPI_GENERIC_CS_PIN                              GPIO_PIN_4
+#define SPI_GENERIC_CS_GPIO_PORT                        GPIOA
 
 /* SPECIFIC PROCEDURES */
 #define BSP_PROCEDURE(procedure)                        procedure

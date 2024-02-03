@@ -28,9 +28,6 @@ extern void Error_Handler(void);
 
 /*************************** Variables Definitions ***************************/
 
-extern DMA_HandleTypeDef hdma_usart3_rx;
-extern DMA_HandleTypeDef hdma_usart3_tx;
-
 /*************************** Functions Definitions ***************************/
 
 /**
@@ -285,10 +282,6 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-    /* USART3 interrupt Init */
-    HAL_NVIC_SetPriority(USART2_IRQn, 5, 0);
-    HAL_NVIC_EnableIRQ(USART2_IRQn);
   }
   else if (huart->Instance == USART3)
   {
@@ -317,10 +310,6 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-    /* USART3 interrupt Init */
-    HAL_NVIC_SetPriority(USART3_IRQn, 5, 0);
-    HAL_NVIC_EnableIRQ(USART3_IRQn);
   }
 }
 
@@ -342,9 +331,6 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
     PD6     ------> USART2_RX
     */
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_5 | GPIO_PIN_6);
-
-    /* USART2 interrupt DeInit */
-    HAL_NVIC_DisableIRQ(USART2_IRQn);
   }
   else if (huart->Instance == USART3)
   {
@@ -356,8 +342,5 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
     PD9     ------> USART3_RX
     */
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_8 | GPIO_PIN_9);
-
-    /* USART2 interrupt DeInit */
-    HAL_NVIC_DisableIRQ(USART3_IRQn);
   }
 }
