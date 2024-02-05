@@ -4,23 +4,33 @@
 ############ PROJECT DIRECTORIES #############
 ##############################################
 
-WORKSPACE 				= $(shell pwd)
+WORKSPACE = $(shell pwd)
 
-CORE_DIR        		= $(WORKSPACE)/core
+CORE_DIR            	= $(WORKSPACE)/core
 
-TOOLS_DIR 				= $(WORKSPACE)/../tools
+MIDDLEWARES_DIR 		= $(WORKSPACE)/middlewares
+LIBPUS_DIR      		= $(MIDDLEWARES_DIR)/libpus
+LIBTIME_DIR      		= $(MIDDLEWARES_DIR)/libtime
+TOLOSAT_FS_DIR  		= $(MIDDLEWARES_DIR)/file-system
+IRIDIUM_DRIVER_DIR  	= $(MIDDLEWARES_DIR)/iridium-driver
+
+TOOLS_DIR           	= $(WORKSPACE)/../tools
 CMSIS_DIR 				= $(TOOLS_DIR)/CMSIS
+OS_DIR    				= $(TOOLS_DIR)/OS/FreeRTOS
+FATFS_DIR 				= $(TOOLS_DIR)/FS/FatFs
 HALs_DIR  				= $(TOOLS_DIR)/HALs
 BSPs_DIR  				= $(TOOLS_DIR)/BSPs
 
 CONF_DIR           		= $(WORKSPACE)/conf
-CONF_HALS_DIR     		= $(CONF_DIR)/conf_HALs
+CONF_FREERTOS_DIR  		= $(CONF_DIR)/conf_FreeRTOS
+CONF_HALS_DIR      		= $(CONF_DIR)/conf_HALs
 CONF_MISRA_DIR     		= $(CONF_DIR)/conf_misra
 
 APPLICATION_DIR 		= $(WORKSPACE)/application
 
 BUILD_DIR             	= $(WORKSPACE)/build
 BUILD_CORE_DIR        	= $(BUILD_DIR)/core
+BUILD_APPLICATION_DIR 	= $(BUILD_DIR)/application
 BUILD_TOOLS_DIR       	= $(BUILD_DIR)/tools
 BUILD_LIBS_DIR        	= $(BUILD_DIR)/libs
 TARGET_DIR            	= $(BUILD_DIR)/target
@@ -32,6 +42,26 @@ TARGET_DIR            	= $(BUILD_DIR)/target
 # Main Directories
 CORE_INCDIR = $(CORE_DIR)/inc
 CORE_SRCDIR = $(CORE_DIR)/src
+
+##############################################
+########### APPLICATION DIRECTORIES ##########
+##############################################
+
+# Application Directories
+APPLICATION_INCDIR = $(APPLICATION_DIR)/inc
+APPLICATION_SRCDIR = $(APPLICATION_DIR)/src
+
+##############################################
+################ OS DIRECTORIES ##############
+##############################################²
+
+# FreeRTOS Kernel Directories
+OS_KERNEL_INCDIR      = $(OS_DIR)/include
+OS_KERNEL_SRCDIR      = $(OS_DIR)
+OS_KERNEL_COMMON_DIR  = $(OS_DIR)/portable/Common
+OS_KERNEL_MEMMANG_DIR = $(OS_DIR)/portable/MemMang
+OS_KERNEL_ARM_DIR     = $(OS_DIR)/portable/GCC/$(FREERTOS_PORTABLE)
+OS_KERNEL_OBJDIR      = $(BUILD_DIR)/tools/os
 
 ##############################################
 ############## CMSIS DIRECTORIES #############
