@@ -1,1 +1,5 @@
 build
+main.i
+main.s
+main.o
+main
