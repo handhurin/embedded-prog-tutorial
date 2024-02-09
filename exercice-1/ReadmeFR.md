@@ -27,11 +27,11 @@ Effectuons l'ensemble de ces étapes sur le fichier main.c à la racine du dossi
 
 **Question 4 :** Observons le contenu du fichier .o. Si l'on fait `cat main.o` (cat sert à afficher le contenu d'un fichier texte sur le terminal), qu'observe-t-on ? Est-ce normal ?
 
-**Question 5 :** Utilisons desormais la commande `hexdump -C main.o` pour afficher le contenu du fichier main.o (l'argument -C permet d'afficher l'ASCII équivalent de l'hexa sur une deuxième colonne). Est-ce que l'on retrouve les labels de la questions 3 dans ce dump ?
+**Question 5 :** Utilisons desormais la commande `hexdump -C main.o` pour afficher le contenu du fichier main.o (l'argument -C permet d'afficher l'ASCII équivalent de l'hexa sur une deuxième colonne). Est-ce que l'on retrouve les labels de la questions 3 dans ce dump ? Qu'est devenu le label L_.str ?
 
 On peut utiliser la commande objdump pour lire le contenu des fichiers objets.
 
-**Question 6 :** La commande `objdump -t main.o` permet d'afficher les symboles. Les symboles d'un fichier objet regroupes : les sections, les fonctions, les variables gloables et les labels de l'assembleur. Est-ce que l'en faisant `objdump -t main.o` on retrouve les labels de la question 3.
+**Question 6 :** La commande `objdump -t main.o` permet d'afficher les symboles. Les symboles d'un fichier objet regroupes : les sections, les fonctions, les variables gloables et les labels de l'assembleur. Est-ce que l'en faisant `objdump -t main.o` on retrouve le label _main de la question 3.
 
 **Question 7 :** La commande `objdump -d main.o` permet de dessasembler le code et de revenir à l'assembleur. Comparer la sortie de la commande `objdump -d main.o` au fichier main.s. Est-ce que les directives assembleurs (les lignes du fichier assembleur qui commence par un . comme ".toto") sont toujours presente ? Est-ce que l'assembleur est pareil au niveau de l'instruction "leaq" (load equivalent address quadword).
 
@@ -45,3 +45,180 @@ L'instruction leaq 21(%rip), %rdi (et son commentaire "## 0x100003f85 <_printf+0
 
 ## 2. Introduction aux makefiles
 
+Dans cette deuxième partie nous allons voir l'interet des Makefiles pour compiler un projet. Dans un vrai projet, il est rare d'avoir un unique fichier source, on se retrouve le plus souvent avec :
+- Une arborescence avec plusieurs dossiers contenant tout les fichiers sources
+- Des fichiers sources
+- Des fichiers headers
+
+Proposons le petit projet suivant :
+- Un dossier src contenant main.c et operations.c
+- Un dossier inc contenant header.h et operation.h
+- Un dossier build qui contiendra les fichiers compilés
+
+Si l'on souhaite compiler ce projet il faut :
+1. Compiler le fichier main.c en main.o
+2. Compiler le fichier operations.c en operations.o
+3. Linker les deux fichiers ensemble et produire l'executable projet
+
+Or pour compiler main.c et operations.c, on doit également inclure les fichiers headers. Pour cela, il faut ajouter lors de la compilation "-I {chemindudossierdesincludes}".
+Pour compiler ce projet il faut donc faire :
+1. `gcc -c src/main.c -Iinc -o build/main.o`
+2. `gcc -c src/operations.c -Iinc -o build/operation.o`
+3. `gcc build/main.o build/operation.o -o build/program`
+On peut alors executer le programme en faisant `./build/program`. 
+
+On comprend vite que compiler un programme avec plusieurs dizaines voir centaine de fichier devient vite un enfer. C'est pourquoi l'outil make a été inventé pour automatiser la compilation.
+
+Nous allons voir comment creer un fichier Makefile pour compiler le projet. Un makefile est basé sur ce qu'on appelle des "cibles" ou "targets" en anglais. La syntaxe est la suivante : 
+```
+cible : composantes
+    commandes
+```
+Chaque cible est definie par des composantes et des commandes (Remarques : une cible peut avoir 0 composante et 0 commande même si cela ne serait pas très utile).
+- Une composante (component en anglais) est une dependance de la cible, cela peut être un fichier ou une autre cible. Pour que la cible soit réalisée, il faut que 
+    - Le fichier existe si la composante est un fichier
+    - La cible ai été exécuté.
+- Une commande est comme son nom l'indique une commande a executer si toutes les composantes sont presentes ou on été executé. 
+
+**Question 1 :** Remplir le Makefile avec les cibles suivantes. Quel commande echo sera exécutée en premier et pourquoi ? Executer la commande `make` et confirmer (ou infirmer) votre théorie.
+```
+test1 : test2
+	@echo "Echo from test 1"
+
+test2 :
+	@echo "Echo from test 2"
+```
+
+**Remarque :** Le @ devant echo permet de rendre muet l'appel de la commande. Seul la sortie de la commande apparait. Si le @ n'était pas present alors le terminal afficherait 
+```
+> echo "Echo from test 2"
+> Echo from test 2
+```
+
+En réalité quand l'on execute la commande `make`, l'outil makefile va automatiquement executer la première cible du fichier Makefile (ou du fichier makefile)present dans le repertoire. Mais l'on peut executer une autre cible que la première du fichier. Il suffit de faire `make nomcible`.
+
+**Question 2 :** Executer la commande `make test2`, quelle cible est appellée ? Est-ce que test1 est appellé ? Pourquoi ?
+
+Si l'on souhaite executer un Makefile qui ne s'appelle pas Makefile ou makefile il faut alors executer `make -f nomdufichier`. Mais il est de convention de nommé le Makefile principale Makefile (sans extension).
+
+Un Makefile peut inclure d'autre Makefiles, c'est une méthode souvent utilisé pour ne pas se retouver avec un Makefile gigantesque mais plusieurs makefile chacun spécialisé pour une action. Il est communement admis que ces makefiles secondaire ont l'extension .mk à la fin du nom du fichier. Pour inclure un makefile dans un makefile il suffit d'écrire `include nomdumakefile`.
+
+Un cas d'utilisation courant des fichiers makefiles secondaires est le fichier path.mk dans lequel on stocke tous les chemins du projet dans des variables.
+
+Pour creer une variable dans un makefile il suffit d'écrire :
+``` NOMVARIABLE = valeurvariable ```
+Pour utiliser cette variable dans le makefile il suffit de faire 
+``` $(NOMVARIABLE) ```
+
+Le fichier paths.mk a été preparé avec les variables WORKSPACE_DIR, SRC_DIR, INC_DIR et BUILD_DIR.
+
+**Question 3 :** Modifier le fichier Makefile précédement écrit de façon que test1 print le chemin du dossier build et test2 print le chemin des sources et des includes.
+La sortie devra être 
+```
+> Chemin des sources : ./src
+> Chemin des includes : ./inc
+> Chemin de build : ./build
+```
+
+**Question 4 :** Supprimer les cibles test1 et test2 et remplacer les par 3 cibles \$(BUILD_DIR)/program, \$(BUILD_DIR)/main.o, \$(BUILD_DIR)/operations.o. Pour chaque cible indiquer les bonnes composantes et les commandes.
+
+**Question 5 :** Rajouter deux cibles build et clean. La cible build doit être la premiere cible du fichier makefile et a pour composante \$(BUILD_DIR)/program et pas de commande. Tandis que clean n'a pas de composante et a pour commande `rm -rf build/*`
+
+On peut desormais faire `make clean build`. On peut même creer une cible all qui a pour composante clean et build.
+
+A partit d'ici on devrait se retrouver avec le Makefile suivant :
+```
+include path.mk
+
+all : clean build
+
+build : $(BUILD_DIR)/program
+
+$(BUILD_DIR)/program : #Mettre les dependances
+	#Mettre la commande
+
+$(BUILD_DIR)/main.o : #Mettre les dependances
+	#Mettre la commande
+
+$(BUILD_DIR)/operations.o : #Mettre les dependances
+	#Mettre la commande
+
+clean :
+	rm -rf build/*
+```
+
+Plutot que d'avoir à recopier dans la commande la cible et les dependances on peut utiliser "\$^" au lieu des composantes et "\$@" au lieu de la cible. Par exemple 
+
+```
+toto.o : toto.c
+    gcc -c toto.c -o toto.o
+```
+Devient :
+```
+toto.o : toto.c
+    gcc -c $^ -o $@
+```
+
+**Question 6 :** Modifier le makefile de façon à que les commandes n'utilisent plus que \$^ et \$@.
+
+On remarque alors que les cibles main.o et operations.o ont exactement la même commande `gcc -c $^ -I$(INC_DIR) -o $@`. On pourrait donc utilise un moyen de creer une cible générique pour tous les fichiers objets. Pour cela utilisons l'opérateur % qui équivaut à "pour tout élement".
+Par exemple :
+```
+$(PDF_DIR)/%.pdf : $(TXT_DIR)/%.txt
+    #Commande de conversion txt en pdf
+```
+Est une cible générique pour generer un pdf basé sur un fichier text.
+
+**Question 7 :** Remplacer les cibles \$(BUILD_DIR)/main.o et \$(BUILD_DIR)/operations.o par une seule cible en utilisant %.
+
+On doit alors se retrouver avec le makefile suivant :
+```
+include path.mk
+
+all : clean build
+
+build : $(BUILD_DIR)/program
+
+$(BUILD_DIR)/program : #liste des fichiers .o
+	gcc $^ -o $@
+
+# cible_o_generique : composante_c_generique
+    gcc -c $^ -I$(INC_DIR) -o $@
+
+clean :
+	rm -rf build/*
+```
+
+Il reste un dernier problème qu'on aimerai resoudre : pour la cible programme on se retrouve a devoir lister tous les fichiers objets dans les composantes. On aimerait bien avoir une variable qui contient automatiquement les fichiers objets.
+On proprose alors de creer une variable SRCS contenant tous les fichiers sources et OBJS contenant tous les fichiers OBJS.
+
+**Question 8 :** Creer la variable SRCS en listant dedans tous les fichiers sources. Puis creer la variable OBJS en faisant `OBJS = $(SRCS:.c=.o)` (Cela signifie qu'on prend tous les élements de SRCS et qu'on modifie l'extension .c en .o). Modifier le makefile en conséquence.
+
+Pour l'instant nous n'avons fait que décaler le problème : au lieu d'avoir la liste des fichiers objets dans la cible \$(BUILD_DIR)/program on l'a dans la variable SRCS. On peut alors utiliser la commande `wildcard *` qui repertorie tous les élements du repertoir present. Pour que SRCS contient tous les fichiers sources du dossier src il suffit de faire `SRCS = $(wildcard $(SRC_DIR)/*.c)`
+
+**Question 9 :** Modifier le makefile en conséquence.
+
+On peut même créer une variable TARGET qui contient la cible (ici \$(BUILD_DIR)/program\) et de remplacer \$(BUILD_DIR)/program par target ce qui sera plus esthetique.
+
+Un beau makefile à la fin de cette exercice doit ressembler au suivant :
+```
+# Makefile for Exercice 1
+include path.mk
+
+TARGET  = $(BUILD_DIR)/program
+SRCS 	= $(BUILD_DIR)/main.c $(BUILD_DIR)/operations.c
+OBJS    = $(SRCS:.c=.o)
+
+all : clean build
+
+build : $(TARGET)
+
+$(TARGET) : $(OBJS)
+	gcc $^ -o $@
+
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
+	gcc -c $^ -I$(INC_DIR) -o $@
+
+clean :
+	rm -rf build/*
+```
