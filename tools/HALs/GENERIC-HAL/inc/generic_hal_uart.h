@@ -1,14 +1,14 @@
 /**
- * @file    tolosat_hal_uart.h
+ * @file    generic_hal_uart.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for TOLOSAT HAL UART functions
+ * @brief   Header file for GENERIC HAL UART functions
  * @date    30/04/2023
  *
  * @copyright Copyright (c) TOLOSAT & Merlin Kooshmanian 2024
  */
 
 /**
- * @defgroup hal_tolosat TOLOSAT HAL
+ * @defgroup generic_hal GENERIC HAL
  * @{
  * @defgroup drv_uart Driver UART
  * Functions that allows to drive UART independantly of which 
@@ -16,12 +16,12 @@
  * @{
  */
 
-#ifndef TOLOSAT_HAL_UART_H
-#define TOLOSAT_HAL_UART_H
+#ifndef generic_hal_UART_H
+#define generic_hal_UART_H
 
 /******************************* Include Files *******************************/
 
-#include "tolosat_hal_types.h"
+#include "generic_hal_types.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -61,8 +61,8 @@ typedef enum
 {
     UART_IOCTL_DMA_START_RX = 0u,   /**< UART IO CTL start DMA tx */
     UART_IOCTL_DMA_START_TX,        /**< UART IO CTL start DMA rx */
-    UART_IOCTL_DMA_CHECK_RX_ENDED,        /**< UART IO CTL verify if DMA rx ended */
-    UART_IOCTL_DMA_CHECK_TX_ENDED,        /**< UART IO CTL verify if DMA tx ended */
+    UART_IOCTL_DMA_CHECK_RX_ENDED,  /**< UART IO CTL verify if DMA rx ended */
+    UART_IOCTL_DMA_CHECK_TX_ENDED,  /**< UART IO CTL verify if DMA tx ended */
     UART_IOCTL_NB_ACTION,           /**< UART IO CTL maximum number of actions */
 } uartIoCtlAction_t;
 
@@ -88,7 +88,7 @@ halStatus_t UartRead(uartInst_t *uart_inst, uartMsg_t *msg, uartMsgLength_t leng
 halStatus_t UartIoctl(uartInst_t *uart_inst, halIoCtlCmd_t io_cmd);
 halStatus_t UartClose(uartInst_t *uart_inst);
 
-#endif /* TOLOSAT_HAL_UART_H */
+#endif /* generic_hal_UART_H */
 
 /** 
  * @} 

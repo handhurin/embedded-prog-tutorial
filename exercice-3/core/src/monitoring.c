@@ -11,7 +11,7 @@
 
 #include "os.h"
 #include "monitoring.h"
-#include "tolosat_hal.h"
+#include "generic_hal.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -35,7 +35,7 @@ static volatile unsigned long ulHighFrequencyTimerTicks;
 
 /**
  * @fn      InitMonitoring(void)
- * @brief   Enables TAPAS monitoring
+ * @brief   Enables monitoring
  * @retval  #MONITORING_ERROR if cannot init timer for monitoring
  * @retval  #MONITORING_SUCCESSFUL else
  */

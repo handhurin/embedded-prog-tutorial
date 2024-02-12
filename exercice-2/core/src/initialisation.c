@@ -11,7 +11,7 @@
 
 #include "initialisation.h"
 #include "io_instances.h"
-#include "tolosat_hal.h"
+#include "generic_hal.h"
 #include "fdir.h"
 
 /***************************** Macros Definitions ****************************/
@@ -42,9 +42,9 @@ void init(void)
     CheckErrors(status, FDIR_ERROR_HANDLER);
 
     // GPIOs Initialisation
-    status = GpioOpen(&led_inst, USER_LED_GPIO_PORT, USER_LED_PIN);
+    status = GpioOpen(&led_inst);
     CheckErrors(status, FDIR_ERROR_HANDLER);
-    status = GpioOpen(&user_button_inst, USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN);
+    status = GpioOpen(&user_button_inst);
     CheckErrors(status, FDIR_ERROR_HANDLER);
 
     // UARTs Initialisation

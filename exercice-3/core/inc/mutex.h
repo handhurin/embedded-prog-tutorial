@@ -11,7 +11,7 @@
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup mutex Mutex Management
- * Functions that allows to manage mutexes in TAPAS
+ * Functions that allows to manage mutexes
  * @{
  */
 

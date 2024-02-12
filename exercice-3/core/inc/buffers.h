@@ -11,7 +11,7 @@
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup buffers Buffers Management
- * Functions that allows to manage buffers in TAPAS
+ * Functions that allows to manage buffers
  * @{
  */
 

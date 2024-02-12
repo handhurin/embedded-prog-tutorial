@@ -11,7 +11,7 @@
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup monitoring Monitoring
- * Functions that allows to monitor TAPAS
+ * Functions that allows to monitor software
  * @{
  */
 

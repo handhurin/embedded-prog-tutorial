@@ -75,40 +75,40 @@
 #define SPI_GENERIC_CS_GPIO_PORT                        GPIOB
 
 /* SPECIFIC PROCEDURES */
-#define BSP_PROCEDURE(procedure)                        procedure
-#define TAPAS_CLOCK_SPECIFIC_INIT_PWR()                 BSP_PROCEDURE()
-#define TAPAS_CLOCK_SPECIFIC_INIT_OSC(osc_init_inst)    BSP_PROCEDURE(osc_init_inst.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_LSE; \
-                                                                      osc_init_inst.HSEState = RCC_HSE_BYPASS; \
-                                                                      osc_init_inst.HSEPredivValue = RCC_HSE_PREDIV_DIV1; \
-                                                                      osc_init_inst.LSEState = RCC_LSE_ON; \
-                                                                      osc_init_inst.HSIState = RCC_HSI_ON; \
-                                                                      osc_init_inst.PLL.PLLState = RCC_PLL_ON; \
-                                                                      osc_init_inst.PLL.PLLSource = RCC_PLLSOURCE_HSE; \
-                                                                      osc_init_inst.PLL.PLLMUL = RCC_PLL_MUL9;)
-#define TAPAS_CLOCK_SPECIFIC_INIT_BUS(clk_init_inst)    BSP_PROCEDURE(clk_init_inst.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; \
-                                                                      clk_init_inst.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; \
-                                                                      clk_init_inst.AHBCLKDivider = RCC_SYSCLK_DIV1; \
-                                                                      clk_init_inst.APB1CLKDivider = RCC_HCLK_DIV2; \
-                                                                      clk_init_inst.APB2CLKDivider = RCC_HCLK_DIV1; \
-                                                                      if (HAL_RCC_ClockConfig(&clk_init_inst, FLASH_LATENCY_2) == HAL_OK) \
-                                                                      { \
-                                                                          RCC_PeriphCLKInitTypeDef PeriphClkInit = {0}; \
-                                                                          PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC; \
-                                                                          PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE; \
-                                                                          if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) \
-                                                                          { \
-                                                                              return_value = THAL_ERROR; \
-                                                                          } \
-                                                                      } \
-                                                                      else \
-                                                                      { \
-                                                                          return_value = THAL_ERROR; \
-                                                                      })
-#define TAPAS_IIC_SPECIFIC_INIT(iic_inst)               BSP_PROCEDURE(iic_inst->handle_struct.Init.ClockSpeed = 100000; \
-                                                                      iic_inst->handle_struct.Init.DutyCycle = I2C_DUTYCYCLE_2;)
-#define TAPAS_SPI_SPECIFIC_INIT(spi_inst)               BSP_PROCEDURE(spi_inst->handle_struct.Init.Mode = SPI_MODE_MASTER;)
-#define TAPAS_RTC_SPECIFIC_INIT(rtc_inst)               BSP_PROCEDURE(rtc_inst.Init.AsynchPrediv = RTC_AUTO_1_SECOND; \
-                                                                      rtc_inst.Init.OutPut = RTC_OUTPUTSOURCE_ALARM;)
-#define TAPAS_RTC_SET_MILLISEC(rtc_time)                BSP_PROCEDURE(rtc_time->millisecond = 0u)
+#define BSP_PROCEDURE(procedure)                 procedure
+#define CLOCK_SPECIFIC_INIT_PWR()                BSP_PROCEDURE()
+#define CLOCK_SPECIFIC_INIT_OSC(osc_init_inst)   BSP_PROCEDURE(osc_init_inst.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_LSE; \
+                                                               osc_init_inst.HSEState = RCC_HSE_BYPASS; \
+                                                               osc_init_inst.HSEPredivValue = RCC_HSE_PREDIV_DIV1; \
+                                                               osc_init_inst.LSEState = RCC_LSE_ON; \
+                                                               osc_init_inst.HSIState = RCC_HSI_ON; \
+                                                               osc_init_inst.PLL.PLLState = RCC_PLL_ON; \
+                                                               osc_init_inst.PLL.PLLSource = RCC_PLLSOURCE_HSE; \
+                                                               osc_init_inst.PLL.PLLMUL = RCC_PLL_MUL9;)
+#define CLOCK_SPECIFIC_INIT_BUS(clk_init_inst)   BSP_PROCEDURE(clk_init_inst.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; \
+                                                               clk_init_inst.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; \
+                                                               clk_init_inst.AHBCLKDivider = RCC_SYSCLK_DIV1; \
+                                                               clk_init_inst.APB1CLKDivider = RCC_HCLK_DIV2; \
+                                                               clk_init_inst.APB2CLKDivider = RCC_HCLK_DIV1; \
+                                                               if (HAL_RCC_ClockConfig(&clk_init_inst, FLASH_LATENCY_2) == HAL_OK) \
+                                                               { \
+                                                                   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0}; \
+                                                                   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC; \
+                                                                   PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE; \
+                                                                   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) \
+                                                                   { \
+                                                                       return_value = GEN_HAL_ERROR; \
+                                                                   } \
+                                                               } \
+                                                               else \
+                                                               { \
+                                                                   return_value = GEN_HAL_ERROR; \
+                                                               })
+#define IIC_SPECIFIC_INIT(iic_inst)              BSP_PROCEDURE(iic_inst->handle_struct.Init.ClockSpeed = 100000; \
+                                                               iic_inst->handle_struct.Init.DutyCycle = I2C_DUTYCYCLE_2;)
+#define SPI_SPECIFIC_INIT(spi_inst)              BSP_PROCEDURE(spi_inst->handle_struct.Init.Mode = SPI_MODE_MASTER;)
+#define RTC_SPECIFIC_INIT(rtc_inst)              BSP_PROCEDURE(rtc_inst.Init.AsynchPrediv = RTC_AUTO_1_SECOND; \
+                                                               rtc_inst.Init.OutPut = RTC_OUTPUTSOURCE_ALARM;)
+#define RTC_SET_MILLISEC(rtc_time)               BSP_PROCEDURE(rtc_time->millisecond = 0u)
 
 #endif /* NUCLEO_F103RB_BSP_H */

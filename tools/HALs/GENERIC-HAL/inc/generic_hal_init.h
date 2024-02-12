@@ -1,18 +1,18 @@
 /**
- * @file    tolosat_hal_init.h
+ * @file    generic_hal_init.h
  * @author  Merlin Kooshmanian
- * @brief   Header file for TOLOSAT HAL Initialisation functions
+ * @brief   Header file for GENERIC HAL Initialisation functions
  * @date    29/04/2023
  *
  * @copyright Copyright (c) TOLOSAT & Merlin Kooshmanian 2024
  */
 
-#ifndef TOLOSAT_HAL_INIT_H
-#define TOLOSAT_HAL_INIT_H
+#ifndef generic_hal_INIT_H
+#define generic_hal_INIT_H
 
 /******************************* Include Files *******************************/
 
-#include "tolosat_hal_types.h"
+#include "generic_hal_types.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -24,4 +24,4 @@
 
 halStatus_t InitHal(void);
 
-#endif /* TOLOSAT_HAL_INIT_H */
+#endif /* generic_hal_INIT_H */

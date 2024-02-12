@@ -87,36 +87,36 @@
 #define SPI_GENERIC_CS_GPIO_PORT                        GPIOB
 
 /* SPECIFIC PROCEDURES */
-#define BSP_PROCEDURE(procedure)                        procedure
-#define TAPAS_CLOCK_SPECIFIC_INIT_PWR()                 BSP_PROCEDURE(__HAL_RCC_PWR_CLK_ENABLE(); \
-                                                                      __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);)
-#define TAPAS_CLOCK_SPECIFIC_INIT_OSC(osc_init_inst)    BSP_PROCEDURE(osc_init_inst.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE; \
-                                                                      osc_init_inst.HSEState = RCC_HSE_ON; \
-                                                                      osc_init_inst.LSIState = RCC_LSI_ON; \
-                                                                      osc_init_inst.PLL.PLLState = RCC_PLL_ON; \
-                                                                      osc_init_inst.PLL.PLLSource = RCC_PLLSOURCE_HSE; \
-                                                                      osc_init_inst.PLL.PLLM = 8; \
-                                                                      osc_init_inst.PLL.PLLN = 400; \
-                                                                      osc_init_inst.PLL.PLLP = RCC_PLLP_DIV4; \
-                                                                      osc_init_inst.PLL.PLLQ = 7;)
-#define TAPAS_CLOCK_SPECIFIC_INIT_BUS(clk_init_inst)    BSP_PROCEDURE(clk_init_inst.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; \
-                                                                      clk_init_inst.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; \
-                                                                      clk_init_inst.AHBCLKDivider = RCC_SYSCLK_DIV1; \
-                                                                      clk_init_inst.APB1CLKDivider = RCC_HCLK_DIV4; \
-                                                                      clk_init_inst.APB2CLKDivider = RCC_HCLK_DIV2; \
-                                                                      if (HAL_RCC_ClockConfig(&clk_init_inst, FLASH_LATENCY_2) != HAL_OK) \
-                                                                      { \
-                                                                          return_value = THAL_ERROR; \
-                                                                      })
-#define TAPAS_IIC_SPECIFIC_INIT(iic_inst)               BSP_PROCEDURE(iic_inst->handle_struct.Init.ClockSpeed = 100000; \
-                                                                      iic_inst->handle_struct.Init.DutyCycle = I2C_DUTYCYCLE_2;)
-#define TAPAS_SPI_SPECIFIC_INIT(spi_inst)               BSP_PROCEDURE(spi_inst->handle_struct.Init.Mode = SPI_MODE_MASTER;)
-#define TAPAS_RTC_SPECIFIC_INIT(rtc_inst)               BSP_PROCEDURE(rtc_inst.Init.HourFormat = RTC_HOURFORMAT_24; \
-                                                                      rtc_inst.Init.AsynchPrediv = 127u; \
-                                                                      rtc_inst.Init.SynchPrediv = 255u; \
-                                                                      rtc_inst.Init.OutPut = RTC_OUTPUT_DISABLE; \
-                                                                      rtc_inst.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH; \
-                                                                      rtc_inst.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;)
-#define TAPAS_RTC_SET_MILLISEC(rtc_time)                BSP_PROCEDURE(rtc_time->millisecond = (MILLISECOND_SCALER*(time.SecondFraction-time.SubSeconds))/(time.SecondFraction+1);)
+#define BSP_PROCEDURE(procedure)                  procedure
+#define CLOCK_SPECIFIC_INIT_PWR()                 BSP_PROCEDURE(__HAL_RCC_PWR_CLK_ENABLE(); \
+                                                                __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);)
+#define CLOCK_SPECIFIC_INIT_OSC(osc_init_inst)    BSP_PROCEDURE(osc_init_inst.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE; \
+                                                                osc_init_inst.HSEState = RCC_HSE_ON; \
+                                                                osc_init_inst.LSIState = RCC_LSI_ON; \
+                                                                osc_init_inst.PLL.PLLState = RCC_PLL_ON; \
+                                                                osc_init_inst.PLL.PLLSource = RCC_PLLSOURCE_HSE; \
+                                                                osc_init_inst.PLL.PLLM = 8; \
+                                                                osc_init_inst.PLL.PLLN = 400; \
+                                                                osc_init_inst.PLL.PLLP = RCC_PLLP_DIV4; \
+                                                                osc_init_inst.PLL.PLLQ = 7;)
+#define CLOCK_SPECIFIC_INIT_BUS(clk_init_inst)    BSP_PROCEDURE(clk_init_inst.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; \
+                                                                clk_init_inst.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; \
+                                                                clk_init_inst.AHBCLKDivider = RCC_SYSCLK_DIV1; \
+                                                                clk_init_inst.APB1CLKDivider = RCC_HCLK_DIV4; \
+                                                                clk_init_inst.APB2CLKDivider = RCC_HCLK_DIV2; \
+                                                                if (HAL_RCC_ClockConfig(&clk_init_inst, FLASH_LATENCY_2) != HAL_OK) \
+                                                                { \
+                                                                    return_value = GEN_HAL_ERROR; \
+                                                                })
+#define IIC_SPECIFIC_INIT(iic_inst)               BSP_PROCEDURE(iic_inst->handle_struct.Init.ClockSpeed = 100000; \
+                                                                iic_inst->handle_struct.Init.DutyCycle = I2C_DUTYCYCLE_2;)
+#define SPI_SPECIFIC_INIT(spi_inst)               BSP_PROCEDURE(spi_inst->handle_struct.Init.Mode = SPI_MODE_MASTER;)
+#define RTC_SPECIFIC_INIT(rtc_inst)               BSP_PROCEDURE(rtc_inst.Init.HourFormat = RTC_HOURFORMAT_24; \
+                                                                rtc_inst.Init.AsynchPrediv = 127u; \
+                                                                rtc_inst.Init.SynchPrediv = 255u; \
+                                                                rtc_inst.Init.OutPut = RTC_OUTPUT_DISABLE; \
+                                                                rtc_inst.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH; \
+                                                                rtc_inst.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;)
+#define RTC_SET_MILLISEC(rtc_time)                BSP_PROCEDURE(rtc_time->millisecond = (MILLISECOND_SCALER*(time.SecondFraction-time.SubSeconds))/(time.SecondFraction+1);)
 
 #endif /* DISCOVERY_F407VG_BSP_H */

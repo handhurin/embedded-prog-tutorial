@@ -11,7 +11,7 @@
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup errors Errors Management
- * Functions that allows to manage errors in TAPAS
+ * Functions that allows to manage errors
  * @{
  */
 

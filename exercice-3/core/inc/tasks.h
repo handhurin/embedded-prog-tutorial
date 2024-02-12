@@ -11,7 +11,7 @@
  * @defgroup core_functions Core Functions
  * @{
  * @defgroup tasks Tasks Management
- * Functions that allows to manage tasks in TAPAS
+ * Functions that allows to manage tasks
  * @{
  */
 

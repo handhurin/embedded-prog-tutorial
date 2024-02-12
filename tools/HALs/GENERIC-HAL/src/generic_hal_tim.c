@@ -1,17 +1,15 @@
 /**
- * @file    tolosat_hal_tick.c
+ * @file    generic_hal_tim.c
  * @author  Merlin Kooshmanian
- * @brief   Source file for TOLOSAT HAL Tick for HAL
+ * @brief   Source file for GENERIC HAL timer and ticks for HAL
  * @date    29/04/2023
  *
- * This file is base on the stm32_hal_timebase_tim_template.c
- * and was generated with ST wizards
  * @copyright Copyright (c) TOLOSAT & Merlin Kooshmanian 2024
  */
 
 /******************************* Include Files *******************************/
 
-#include "tolosat_hal_tick.h"
+#include "generic_hal_tim.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -23,15 +21,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 /*************************** Variables Definitions ***************************/
 
 /**
- * @var     htim4
+ * @var     hal_tick_timer
  * @brief   HAL Timer 4 instance declaration (timer used for HAL tick)
  */
-static TIM_HandleTypeDef htim4;
+static TIM_HandleTypeDef hal_tick_timer;
 
 /*************************** Functions Definitions ***************************/
 
 /**
- * @brief  This function configures the TIM11 as a time base source.
+ * @brief  This function configures the TIM4 as a time base source.
  *         The time source is configured  to have 1ms time base with a dedicated
  *         Tick interrupt priority.
  * @note   This function is called  automatically at the beginning of program after
@@ -71,7 +69,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     uwPrescalerValue = (uint32_t)((uwTimclock / 1000000U) - 1U);
 
     /* Initialize TIM4 */
-    htim4.Instance = TIM4;
+    hal_tick_timer.Instance = TIM4;
 
     /* Initialize TIMx peripheral as follow:
 
@@ -80,17 +78,17 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     + ClockDivision = 0
     + Counter direction = Up
     */
-    htim4.Init.Period = (1000000U / 1000U) - 1U;
-    htim4.Init.Prescaler = uwPrescalerValue;
-    htim4.Init.ClockDivision = 0;
-    htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-    htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+    hal_tick_timer.Init.Period = (1000000U / 1000U) - 1U;
+    hal_tick_timer.Init.Prescaler = uwPrescalerValue;
+    hal_tick_timer.Init.ClockDivision = 0;
+    hal_tick_timer.Init.CounterMode = TIM_COUNTERMODE_UP;
+    hal_tick_timer.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 
-    status = HAL_TIM_Base_Init(&htim4);
+    status = HAL_TIM_Base_Init(&hal_tick_timer);
     if (status == HAL_OK)
     {
         /* Start the TIM time Base generation in interrupt mode */
-        status = HAL_TIM_Base_Start_IT(&htim4);
+        status = HAL_TIM_Base_Start_IT(&hal_tick_timer);
         if (status == HAL_OK)
         {
             /* Enable the TIM4 global Interrupt */
@@ -115,30 +113,30 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 
 /**
  * @brief  Suspend Tick increment.
- * @note   Disable the tick increment by disabling TIM11 update interrupt.
+ * @note   Disable the tick increment by disabling timer hal update interrupt.
  */
 void HAL_SuspendTick(void)
 {
-    /* Disable TIM11 update Interrupt */
-    __HAL_TIM_DISABLE_IT(&htim4, TIM_IT_UPDATE);
+    /* Disable timer HAL update Interrupt */
+    __HAL_TIM_DISABLE_IT(&hal_tick_timer, TIM_IT_UPDATE);
 }
 
 /**
  * @brief  Resume Tick increment.
- * @note   Enable the tick increment by Enabling TIM11 update interrupt.
+ * @note   Enable the tick increment by Enabling timer hal update interrupt.
  */
 void HAL_ResumeTick(void)
 {
-    /* Enable TIM11 Update interrupt */
-    __HAL_TIM_ENABLE_IT(&htim4, TIM_IT_UPDATE);
+    /* Enable TIM HAL Update interrupt */
+    __HAL_TIM_ENABLE_IT(&hal_tick_timer, TIM_IT_UPDATE);
 }
 
 /**
- * @brief This function handles TIM1 trigger and commutation interrupts and TIM11 global interrupt.
+ * @brief This function handles TIM4 trigger and commutation interrupts and TIM4 global interrupt.
  */
 void TIM4_IRQHandler(void)
 {
-    HAL_TIM_IRQHandler(&htim4);
+    HAL_TIM_IRQHandler(&hal_tick_timer);
 }
 
 /**
