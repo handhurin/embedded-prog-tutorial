@@ -80,7 +80,7 @@ Chaque cible est definie par des composantes et des commandes (Remarques : une c
     - La cible ai été exécuté.
 - Une commande est comme son nom l'indique une commande a executer si toutes les composantes sont presentes ou on été executé. 
 
-**Question 1 :** Remplir le Makefile avec les cibles suivantes. Quel commande echo sera exécutée en premier et pourquoi ? Executer la commande `make` et confirmer (ou infirmer) votre théorie.
+**Question 10 :** Remplir le Makefile avec les cibles suivantes. Quel commande echo sera exécutée en premier et pourquoi ? Executer la commande `make` et confirmer (ou infirmer) votre théorie.
 ```
 test1 : test2
 	@echo "Echo from test 1"
@@ -97,7 +97,7 @@ test2 :
 
 En réalité quand l'on execute la commande `make`, l'outil makefile va automatiquement executer la première cible du fichier Makefile (ou du fichier makefile)present dans le repertoire. Mais l'on peut executer une autre cible que la première du fichier. Il suffit de faire `make nomcible`.
 
-**Question 2 :** Executer la commande `make test2`, quelle cible est appellée ? Est-ce que test1 est appellé ? Pourquoi ?
+**Question 11 :** Executer la commande `make test2`, quelle cible est appellée ? Est-ce que test1 est appellé ? Pourquoi ?
 
 Si l'on souhaite executer un Makefile qui ne s'appelle pas Makefile ou makefile il faut alors executer `make -f nomdufichier`. Mais il est de convention de nommé le Makefile principale Makefile (sans extension).
 
@@ -112,7 +112,7 @@ Pour utiliser cette variable dans le makefile il suffit de faire
 
 Le fichier paths.mk a été preparé avec les variables WORKSPACE_DIR, SRC_DIR, INC_DIR et BUILD_DIR.
 
-**Question 3 :** Modifier le fichier Makefile précédement écrit de façon que test1 print le chemin du dossier build et test2 print le chemin des sources et des includes.
+**Question 12 :** Modifier le fichier Makefile précédement écrit de façon que test1 print le chemin du dossier build et test2 print le chemin des sources et des includes.
 La sortie devra être 
 ```
 > Chemin des sources : ./src
@@ -120,9 +120,9 @@ La sortie devra être
 > Chemin de build : ./build
 ```
 
-**Question 4 :** Supprimer les cibles test1 et test2 et remplacer les par 3 cibles \$(BUILD_DIR)/program, \$(BUILD_DIR)/main.o, \$(BUILD_DIR)/operations.o. Pour chaque cible indiquer les bonnes composantes et les commandes.
+**Question 13 :** Supprimer les cibles test1 et test2 et remplacer les par 3 cibles \$(BUILD_DIR)/program, \$(BUILD_DIR)/main.o, \$(BUILD_DIR)/operations.o. Pour chaque cible indiquer les bonnes composantes et les commandes.
 
-**Question 5 :** Rajouter deux cibles build et clean. La cible build doit être la premiere cible du fichier makefile et a pour composante \$(BUILD_DIR)/program et pas de commande. Tandis que clean n'a pas de composante et a pour commande `rm -rf build/*`
+**Question 14 :** Rajouter deux cibles build et clean. La cible build doit être la premiere cible du fichier makefile et a pour composante \$(BUILD_DIR)/program et pas de commande. Tandis que clean n'a pas de composante et a pour commande `rm -rf build/*`
 
 On peut desormais faire `make clean build`. On peut même creer une cible all qui a pour composante clean et build.
 
@@ -159,7 +159,7 @@ toto.o : toto.c
     gcc -c $^ -o $@
 ```
 
-**Question 6 :** Modifier le makefile de façon à que les commandes n'utilisent plus que \$^ et \$@.
+**Question 15 :** Modifier le makefile de façon à que les commandes n'utilisent plus que \$^ et \$@.
 
 On remarque alors que les cibles main.o et operations.o ont exactement la même commande `gcc -c $^ -I$(INC_DIR) -o $@`. On pourrait donc utilise un moyen de creer une cible générique pour tous les fichiers objets. Pour cela utilisons l'opérateur % qui équivaut à "pour tout élement".
 Par exemple :
@@ -169,7 +169,7 @@ $(PDF_DIR)/%.pdf : $(TXT_DIR)/%.txt
 ```
 Est une cible générique pour generer un pdf basé sur un fichier text.
 
-**Question 7 :** Remplacer les cibles \$(BUILD_DIR)/main.o et \$(BUILD_DIR)/operations.o par une seule cible en utilisant %.
+**Question 16 :** Remplacer les cibles \$(BUILD_DIR)/main.o et \$(BUILD_DIR)/operations.o par une seule cible en utilisant %.
 
 On doit alors se retrouver avec le makefile suivant :
 ```
@@ -192,11 +192,11 @@ clean :
 Il reste un dernier problème qu'on aimerai resoudre : pour la cible programme on se retrouve a devoir lister tous les fichiers objets dans les composantes. On aimerait bien avoir une variable qui contient automatiquement les fichiers objets.
 On proprose alors de creer une variable SRCS contenant tous les fichiers sources et OBJS contenant tous les fichiers OBJS.
 
-**Question 8 :** Creer la variable SRCS en listant dedans tous les fichiers sources. Puis creer la variable OBJS en faisant `OBJS = $(SRCS:.c=.o)` (Cela signifie qu'on prend tous les élements de SRCS et qu'on modifie l'extension .c en .o). Modifier le makefile en conséquence.
+**Question 17 :** Creer la variable SRCS en listant dedans tous les fichiers sources. Puis creer la variable OBJS en faisant `OBJS = $(SRCS:.c=.o)` (Cela signifie qu'on prend tous les élements de SRCS et qu'on modifie l'extension .c en .o). Modifier le makefile en conséquence.
 
 Pour l'instant nous n'avons fait que décaler le problème : au lieu d'avoir la liste des fichiers objets dans la cible \$(BUILD_DIR)/program on l'a dans la variable SRCS. On peut alors utiliser la commande `wildcard *` qui repertorie tous les élements du repertoir present. Pour que SRCS contient tous les fichiers sources du dossier src il suffit de faire `SRCS = $(wildcard $(SRC_DIR)/*.c)`
 
-**Question 9 :** Modifier le makefile en conséquence.
+**Question 18 :** Modifier le makefile en conséquence.
 
 On peut même créer une variable TARGET qui contient la cible (ici \$(BUILD_DIR)/program\) et de remplacer \$(BUILD_DIR)/program par target ce qui sera plus esthetique.
 

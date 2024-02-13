@@ -80,7 +80,7 @@ Chaque cible est definie par des composantes et des commandes (Remarques : une c
     - The target has been executed.
 - A command is, as its name suggests, a command to be executed if all the components are present or have been executed.
 
-**Question 1:** Fill in the Makefile with the following targets.Which echo command will be executed first and why? Run the `make` command and confirm (or disprove) your theory.
+**Question 10:** Fill in the Makefile with the following targets.Which echo command will be executed first and why? Run the `make` command and confirm (or disprove) your theory.
 ```
 test1 : test2
 	@echo "Echo from test 1"
@@ -97,7 +97,7 @@ test2 :
 
 In reality, when the `make` command is executed, the makefile tool will automatically execute the first target of the Makefile (or makefile) present in the directory. But you can execute a target other than the first one in the file. All you have to do is `make targetname`.
 
-**Question 2:** Run the command `make test2`, which target is called? Is test1 called? Why or why not?
+**Question 11:** Run the command `make test2`, which target is called? Is test1 called? Why or why not?
 
 If you want to run a Makefile which is not called Makefile or makefile, you need to run `make -f filename`. But it is conventional to name the main Makefile Makefile (without extension).
 
@@ -112,7 +112,7 @@ To use this variable in the makefile, just do
 
 The paths.mk file has been prepared with the WORKSPACE_DIR, SRC_DIR, INC_DIR and BUILD_DIR variables.
 
-**Question 3:** Modify the Makefile written above so that test1 prints the path to the build folder and test2 prints the path to the sources and includes.
+**Question 12:** Modify the Makefile written above so that test1 prints the path to the build folder and test2 prints the path to the sources and includes.
 The output should be 
 ```
 > Source path: ./src
@@ -120,9 +120,9 @@ The output should be
 > Build path: ./build
 ```
 
-**Question 4 : ** Delete the test1 and test2 targets and replace them with 3 targets : \$(BUILD_DIR)/program, \$(BUILD_DIR)/main.o, \$(BUILD_DIR)/operations.o. For each target indicate the good components and the commands.
+**Question 13 :** Delete the test1 and test2 targets and replace them with 3 targets : \$(BUILD_DIR)/program, \$(BUILD_DIR)/main.o, \$(BUILD_DIR)/operations.o. For each target indicate the good components and the commands.
 
-**Question 5:** Add two targets: build and clean. The build target must be the first target in the makefile and has the component \$(BUILD_DIR)/program and no commands. Whereas clean has no component and the command `rm -rf build/*`.
+**Question 14:** Add two targets: build and clean. The build target must be the first target in the makefile and has the component \$(BUILD_DIR)/program and no commands. Whereas clean has no component and the command `rm -rf build/*`.
 
 We can now do `make clean build`. You can even create an all target with clean and build components.
 
@@ -159,7 +159,7 @@ toto.o : toto.c
     gcc -c $^ -o $@
 ```
 
-**Question 6:** Modify the makefile so that commands only use \$^ and \$@.
+**Question 15:** Modify the makefile so that commands only use \$^ and \$@.
 
 You can see that the main.o and operations.o targets have exactly the same command `gcc -c $^ -I$(INC_DIR) -o $@`. We could therefore use a way of creating a generic target for all object files. To do this, we use the % operator, which is equivalent to "for any element".
 For example :
@@ -169,7 +169,7 @@ $(PDF_DIR)/%.pdf : $(TXT_DIR)/%.txt
 ```
 Is a generic target for generating a pdf based on a text file.
 
-**Question 7:** Replace the targets \$(BUILD_DIR)/main.o and \$(BUILD_DIR)/operations.o with a single target using %.
+**Question 16:** Replace the targets \$(BUILD_DIR)/main.o and \$(BUILD_DIR)/operations.o with a single target using %.
 
 You should then end up with the following makefile:
 ```
@@ -192,11 +192,11 @@ clean :
 There's one last problem we'd like to solve: for the target program, we end up having to list all the object files in the components. We would like to have a variable which automatically contains the object files.
 We therefore propose to create an SRCS variable containing all the source files and an OBJS variable containing all the OBJS files.
 
-**Question 8:** Create the variable SRCS by listing all the source files in it. Then create the OBJS variable by doing `OBJS = $(SRCS:.c=.o)` (This means that you take all the elements of SRCS and change the .c extension to .o). Modify the makefile accordingly.
+**Question 17:** Create the variable SRCS by listing all the source files in it. Then create the OBJS variable by doing `OBJS = $(SRCS:.c=.o)` (This means that you take all the elements of SRCS and change the .c extension to .o). Modify the makefile accordingly.
 
 For the moment we have only shifted the problem: instead of having the list of object files in the target \$(BUILD_DIR)/program we have it in the SRCS variable. You can then use the `wildcard *` command, which lists all the elements in the current directory. To make SRCS contain all the source files in the src folder, just do `SRCS = $(wildcard $(SRC_DIR)/*.c)`.
 
-**Question 9:** Modify the makefile accordingly.
+**Question 18:** Modify the makefile accordingly.
 
 You can even create a TARGET variable which contains the target (here \$(BUILD_DIR)/program) and replace \$(BUILD_DIR)/program by target which will be more aesthetic.
 
