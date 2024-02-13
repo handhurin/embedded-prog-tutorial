@@ -28,7 +28,6 @@ void MemManage_Handler(void);
 void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void DebugMon_Handler(void);
-void TIM4_IRQHandler(void);
 void USER_BUTTON_IRQ_HANDLER(void);
 void USER_BUTTON_IRQ_CALLBACK(uint16_t GPIO_Pin);
 void I2C_GENERIC_EVT_IRQ_HANDLER(void);

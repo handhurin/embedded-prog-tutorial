@@ -36,8 +36,8 @@ int main(void)
     // Function Core
     while (1)
     {
-        (void) GpioToggle(&led_inst);
-        printf("Hello \n");
+        (void)GpioToggle(&led_inst);
+        (void)printf("Hello \n");
         HAL_Delay(500);
     }
 

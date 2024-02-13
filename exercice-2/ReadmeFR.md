@@ -9,6 +9,8 @@ La programmation de driver bas niveau n'est pas couvert par cette exercice. C'es
 
 ## 1. Driver Equipement LM75
 
+Dans cette partie l'objectif est de realiser un driver equipement pour le LM75.
+
 ## 2. Gestion de l'Overtemperature Output
 
 ## 3. Programmation du système
@@ -17,4 +19,8 @@ La programmation de driver bas niveau n'est pas couvert par cette exercice. C'es
 
 Pour des raisons de copyrights, je ne peux pas dans cette partie fournir une copie du standard MISRA C. Si cette exercice est réalisé en presentiel et que je suis présent, nous pouvons réaliser cette section ensemble. Si ce n'est pas le cas et que vous ne possedez pas une copie des guidelines du MISRA C je vous invite à sauter cette section.
 
-**Question 1:** Executer la commande 
+**Question 1:** Executer la commande `make verif`, quelles sont sont les types d'erreurs qui ont été commise (Entre crochet à la fin de l'erreur). 
+
+**Question 2:** Corriger les erreurs jusqu'à qu'il n'y ai plus d'erreur detectées par cppcheck. On pourra dans le cas de faux positif ajouter le commentaire "// cppcheck-suppress nomerreur" sur la ligne qui declenche un faux positif.
+
+**Question 3:** On peut également verifier que la documentation a bien été rediger en executant le script update-doc.sh.
