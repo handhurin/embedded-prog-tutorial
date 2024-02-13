@@ -19,7 +19,7 @@
  */
 iicInst_t iic_inst = {
     .iic_ref = I2C_GENERIC,
-    .drive_type = IIC_IT_MASTER_DRIVE,
+    .drive_type = IIC_POLLING_MASTER_DRIVE,
 };
 
 /**
