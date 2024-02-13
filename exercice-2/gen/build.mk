@@ -1,10 +1,8 @@
 # Software Building Makefile
 
-include conf/build_core.mk
-include conf/build_application.mk
-include conf/build_os.mk
-include conf/build_hal.mk
-include conf/build_bsp.mk
+include gen/build_core.mk
+include gen/build_hal.mk
+include gen/build_bsp.mk
 
 ##############################################
 #################### BUILD ###################
@@ -30,9 +28,9 @@ endif
 build : $(TARGET)
 
 # Target Linking Stage
-$(TARGET) : bsp libhal libgeneric-hal os core application
+$(TARGET) : bsp libhal libgeneric-hal core
 	mkdir -p $(@D)
-	$(CC) ${CORE_OBJS} ${APPLICATION_OBJS} $(OS_OBJS) ${BSP_OBJS} -L$(BUILD_LIBS_DIR) -Wl,--whole-archive -lgeneric-hal-$(VERSION) -Wl,--no-whole-archive -lhal-$(VERSION) $(GENERIC_LDFLAGS) -o $@ > $(TARGET:.elf=.size)
+	$(CC) ${CORE_OBJS} ${BSP_OBJS} -L$(BUILD_LIBS_DIR) -Wl,--whole-archive -lgeneric-hal-$(VERSION) -Wl,--no-whole-archive -lhal-$(VERSION) $(GENERIC_LDFLAGS) -o $@ > $(TARGET:.elf=.size)
 	$(READELF) -a $(TARGET) > $(TARGET:.elf=.readelf)
 	@echo "*****************************"
 	@echo "***   Target Build Done   ***"
