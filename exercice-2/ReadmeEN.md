@@ -12,7 +12,7 @@ Low-level driver programming is not covered by this exercise. It is a long and t
 In this exercise we are going to program a temperature control system in bare metal. The specifications are as follows:
 - The temperature must be measured every second and stored internally.
 - Between each temperature measurement, the microcontroller must wait.
-- A button must allow the last 100 temperature data to be downloaded via the serial link (uart print connected to the STLINK).
+- A button must allow the last 2 minutes of data to be downloaded via the serial link (UART print connected to the STLINK).
 - At any time, if the temperature exceeds a threshold of 30°, the system must indicate that an overtemperature has been detected by means of a light signal. To avoid instability, set T_OS to 30° and T_HYST to 29°.
 
 ## 2. LM75 Equipment Driver
@@ -172,9 +172,19 @@ void EXTI0_IRQHandler(void)
 }
 ```
 
-**Note:** You'll soon realise that it's going to be impossible to manage several GPIOs connected to the same interrupt. This is one of the limitations of STM32 EXTI lines.
+**Note:** You'll soon realize that it's going to be impossible to manage several GPIOs connected to the same interrupt. This is one of the limitations of STM32 EXTI lines.
 
 ## 4. System programming
+
+Now it's a question of implementing everything that has been done previously to meet the specifications.
+
+**Question 13:** Before the while(1) in main, in the init function, initialise the I2C and GPIOs and set the LM75 configuration. 
+
+**Question 14:** Modify main so as to read the temperature every second and store the information for the last two minutes. We could use an array to do this but any other method is welcome.
+
+**Question 15:** Complete the interrupts for the LM75 OS pin and the user button. The OS pin must drive the LED on the board, while the button must be able to print the last 2 minutes of data.
+
+At this point the project should work and meet the specifications.
 
 ## 5. Programming standard: MISRA C
 

@@ -12,7 +12,7 @@ La programmation de driver bas niveau n'est pas couvert par cette exercice. C'es
 Dans cette exercice nous allons programmer en bare metal un système de contrôle de température. Le cahier des charges est le suivant :
 - La temperature doit être mesurée toutes les secondes et stocké en interne.
 - Entre chaque mesure de temperature le microcontrôleur doit attendre.
-- Un bouton doit permettre de dumper les 100 dernières données de température via la liaison série (UART print relié au STLINK).
+- Un bouton doit permettre de dumper les 2 dernières minutes de données de température via la liaison série (UART print relié au STLINK).
 - A tout moment, en cas de dépassement d'un seuil de 30°, le système doit indiqué à l'aide d'un signal lumineux qu'une surtempérature est détectée. Pour éviter un phénomène d'instabilité on réglera T_OS à 30° et T_HYST à 29°.
 
 ## 2. Driver Equipement LM75
@@ -175,6 +175,16 @@ void EXTI0_IRQHandler(void)
 **Remarque :** On comprend vite que ça va être impossible de gérer plusieurs GPIO relié sur la même interruption. C'est une des limitations des EXTI lines des STM32.
 
 ## 4. Programmation du système
+
+Maintenant il s'agit de mettre en oeuvre tous ce qui a été fait auparavant pour répondre au cahier des charges.
+
+**Question 13:** Avant le while(1) du main, dans la fonction init, initialiser l'I2C et les GPIO et régler la configuration du LM75. 
+
+**Question 14:** Modifier le main de façon à lire la temperature toutes les secondes et de stocker l'information des deux dernières minutes. On pourra utiliser un tableau pour le faire mais toute autre méthode est la bienvenue.
+
+**Question 15:** Completer les interruptions du pin LM75 OS et du bouton utilisateur. Il faut que la PIN OS pilote la LED de la carte tandis que le bouton doit pouvoir printer les 2 dernières minutes de données.
+
+A ce moment le projet devrait fonctionner et répondre au cahier des charges.
 
 ## 5. Standard de programmation : MISRA C
 
