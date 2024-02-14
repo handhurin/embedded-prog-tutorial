@@ -11,9 +11,9 @@ Low-level driver programming is not covered by this exercise. It is a long and t
 
 In this exercise we are going to program a temperature control system in bare metal. The specifications are as follows:
 - The temperature must be measured every second and stored internally.
-- Between each temperature measurement, the micro-controller must switch to low power.
-- A button must be used to download all the data via the serial link (uart print connected to the STLINK).
-- At any time, if the temperature exceeds a threshold of 30°, the system must indicate that an overtemperature has been detected by means of a light signal.
+- Between each temperature measurement, the microcontroller must wait.
+- A button must allow the last 100 temperature data to be downloaded via the serial link (uart print connected to the STLINK).
+- At any time, if the temperature exceeds a threshold of 30°, the system must indicate that an overtemperature has been detected by means of a light signal. To avoid instability, set T_OS to 30° and T_HYST to 29°.
 
 ## 2. LM75 Equipment Driver
 
@@ -137,7 +137,42 @@ equipmentsStatus_t LM75GetConf(lm75Conf_t *lm75_conf);
 equipmentsStatus_t LM75SetConf(lm75Conf_t lm75_conf);
 ```
 
+Remember to declare a lm75Inst_t lm75_inst instance in io_instance.c and io_instance.h.
+
 ## 3. Overtemperature Output management
+
+For this part of the exercise we will concentrate on managing the LM75's OS pin. As mentioned above, by default this pin is set to 1 when the temperature is below the overtemperature threshold and to 0 when the temperature is above the overtemperature threshold. 
+What we are interested in here is the value of the OS pin, but rather than constantly reading the state of the pin (known as polling), it is more intelligent to detect an edge and measure the state of the pin after this edge. To do this, we propose to use an interrupt on edge detection.
+
+**Note:** An interrupt is a signal that temporarily stops the main program in order to execute a specific function, called an interrupt routine, which handles external or internal events such as sensor inputs or timers. Once the interrupt routine has been executed, the microcontroller resumes execution of the main program at the point where it was interrupted.
+
+The GPIOs on ST processors offer 3 possible interrupt modes: rising edge interrupt, falling edge interrupt and rising and falling edge interrupt. In our case, what interests us is the detection of rising and falling edges, because if we have a falling edge it means that an overtemperature has been detected, and if we have a rising edge it means that the temperature has dropped back below the threshold. 
+
+**Question 11:** Based on the user_button_inst instance, create an lm75_os_inst instance that uses the GPIOA port, pin GPIO_PIN_0 if you are on NUCLEOF411RE or NUCLEOF103RB, otherwise GPIO_PIN_5 if you are on NUCLEOH745ZI. Set the mode to GPIO_MODE_IT_RISING_FALLING. Then initialise the GPIO in the init function in initialisation.c (as for the other GPIOs).
+
+**Note:** In a microcontroller, interrupts are managed by an interrupt controller on older processors, or a nested vector interrupt controller (NVIC) on most processors today. The NVIC allows several interrupts to be managed at the same time by prioritising them in relation to each other. This allows an interrupt to interrupt an interrupt. NVIC enables interrupts to be enabled/disabled and prioritised. In our case, this is done in the GPIO initialisation (by calling the HAL_NVIC_SetPriority and HAL_NVIC_EnableIRQ functions).
+
+**Note:** In the context of GPIOS, to avoid having as many interrupts as there are GPIOs, what is often done on microcontrollers is to link several GPIO interrupts together. In the case of the STM32, all the PIN 1 (PA1, PB1, PC1, PD1, PE1, ...) have their interrupts linked together. There may even be several groups of pins linked to the same interrupt, for example pins 5 to 9 of all ports (PA5, PB5, ..., PA6, PB6, ..., PA9, PB9, ...) have their interrupts linked together.
+
+**Question 12:** Add the interrupt routine that corresponds to our PIN. The following routine must be completed so that the LED lights up if the threshold temperature is exceeded (pin OS at 0).
+```
+/**
+ * @brief This function handles EXTernal Interrupt handler for LM75 OS pin.
+ */
+void EXTI0_IRQHandler(void)
+{
+    // First clear interrupt flag
+    if (__HAL_GPIO_EXTI_GET_IT(USER_BUTTON_PIN) != 0x00U)
+    {
+    __HAL_GPIO_EXTI_CLEAR_IT(USER_BUTTON_PIN);
+    }
+
+    // Then do the interrupt routine
+    /* Do something here */
+}
+```
+
+**Note:** You'll soon realise that it's going to be impossible to manage several GPIOs connected to the same interrupt. This is one of the limitations of STM32 EXTI lines.
 
 ## 4. System programming
 

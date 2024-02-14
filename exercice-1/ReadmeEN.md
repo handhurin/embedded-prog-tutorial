@@ -1,6 +1,6 @@
 # Exercice 1 : Introduction
 
-Dans cette exercice nous allons introduire les concepts de compilation et des makefiles. Dans le cadre des systèmes embarqués, deux languages sont majoritaires utilisées : le C et le C++. La difference entre ces deux languages reside dans le fait que le C est un language procedurale tandis que le C++ est un language orienté objet. Ces deux languages sont des languages compilés, on utilisera gcc pour le C et g++ pour le C++. Dans ce tutoriel nous nous concentrerons uniquement sur l'utilisation du C. Enfin nous montrerons pourquoi les makefiles sont utiles pour automatiser la compilation de code.
+In this exercise we will introduce the concepts of compilation and makefiles. In the context of embedded systems, two languages are predominantly used: C and C++. The difference between these two languages is that C is a procedural language whereas C++ is an object-oriented language. Both languages are compiled languages, so we use gcc for C and g++ for C++. In this tutorial we will concentrate solely on the use of C. Finally we will show why makefiles are useful for automating the compilation of code.
 
 ## 1 Introduction to compilation
 
@@ -69,13 +69,13 @@ You can then run the program by doing `./build/program`.
 
 It's easy to see that compiling a program with dozens or even hundreds of files can quickly become a nightmare. This is why the make tool was invented to automate compilation.
 
-Nous allons voir comment creer un fichier Makefile pour compiler le projet. Un makefile est basé sur ce qu'on appelle des "cibles" ou "targets" en anglais. La syntaxe est la suivante : 
+We're going to look at how to create a Makefile to compile the project. A makefile is based on what are known as "targets". The syntax is as follows: 
 ```
-cible : composantes
-    commandes
+target: components
+    commands
 ```
-Chaque cible est definie par des composantes et des commandes (Remarques : une cible peut avoir 0 composante et 0 commande même si cela ne serait pas très utile).
-- A component is a dependency of the target, and can be a file or another target. For the target to be realised, it is necessary that 
+Each target is defined by components and commands (Note: a target can have 0 components and 0 commands, although this would not be very useful).
+- A component is a dependency of the target, and can be a file or another target. For the target to be realized, it is necessary that 
     - The file exists if the component is a file
     - The target has been executed.
 - A command is, as its name suggests, a command to be executed if all the components are present or have been executed.
@@ -101,7 +101,7 @@ In reality, when the `make` command is executed, the makefile tool will automati
 
 If you want to run a Makefile which is not called Makefile or makefile, you need to run `make -f filename`. But it is conventional to name the main Makefile Makefile (without extension).
 
-A Makefile can include other Makefiles, this is a method often used to avoid ending up with one gigantic Makefile but several makefiles, each specialised for one action. It is generally accepted that these secondary makefiles have the .mk extension at the end of the file name. To include a makefile in a makefile, simply write `include makefilename`.
+A Makefile can include other Makefiles, this is a method often used to avoid ending up with one gigantic Makefile but several makefiles, each specialized for one action. It is generally accepted that these secondary makefiles have the .mk extension at the end of the file name. To include a makefile in a makefile, simply write `include makefilename`.
 
 A common use for secondary makefiles is the path.mk file, in which all the project paths are stored as variables.
 

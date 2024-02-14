@@ -29,7 +29,6 @@ void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void DebugMon_Handler(void);
 void USER_BUTTON_IRQ_HANDLER(void);
-void USER_BUTTON_IRQ_CALLBACK(uint16_t GPIO_Pin);
 void I2C_GENERIC_EVT_IRQ_HANDLER(void);
 void UART_GENERIC_IRQ_HANDLER(void);
 

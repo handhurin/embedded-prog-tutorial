@@ -51,6 +51,10 @@ void init(void)
     status = UartOpen(&uart_print_inst);
     CheckErrors(status, FDIR_ERROR_HANDLER);
 
+    // I2C Initialisation
+    status = IicOpen(&iic_inst);
+    CheckErrors(status, FDIR_ERROR_HANDLER);
+
     // Console Initialisation
     InitConsole(&uart_print_inst);
 }
