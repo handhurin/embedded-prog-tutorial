@@ -192,7 +192,7 @@ clean :
 Il reste un dernier problème qu'on aimerai résoudre : pour la cible programme on se retrouve a devoir lister tous les fichiers objets dans les composantes. On aimerait bien avoir une variable qui contient automatiquement les fichiers objets.
 On propose alors de créer une variable SRCS contenant tous les fichiers sources et OBJS contenant tous les fichiers OBJS.
 
-**Question 17 :** Créer la variable SRCS en listant dedans tous les fichiers sources. Puis créer la variable OBJS en faisant `OBJS = $(SRCS:.c=.o)` (Cela signifie qu'on prend tous les éléments de SRCS et qu'on modifie l'extension .c en .o). Modifier le makefile en conséquence.
+**Question 17 :** Créer la variable SRCS en listant dedans tous les fichiers sources. Puis créer la variable OBJS en faisant `OBJS = $(subst $(SRC_DIR)/,$(BUILD_DIR)/,$(SRCS:.c=.o))` (Cela signifie qu'on prend tous les éléments de SRCS et que l'on substitue la chaine de caractère SRC_DIR par BUILD_DIR et et que l'on modifie l'extension .c en .o). Modifier le makefile en conséquence.
 
 Pour l'instant nous n'avons fait que décaler le problème : au lieu d'avoir la liste des fichiers objets dans la cible \$(BUILD_DIR)/program on l'a dans la variable SRCS. On peut alors utiliser la commande `wildcard *` qui répertorie tous les éléments du répertoire présent. Pour que SRCS contient tous les fichiers sources du dossier src il suffit de faire `SRCS = $(wildcard $(SRC_DIR)/*.c)`
 
@@ -202,23 +202,27 @@ On peut même créer une variable TARGET qui contient la cible (ici \$(BUILD_DIR
 
 Un beau makefile à la fin de cette exercice doit ressembler au suivant :
 ```
-# Makefile for Exercice 1
 include path.mk
 
 TARGET  = $(BUILD_DIR)/program
-SRCS 	= $(BUILD_DIR)/main.c $(BUILD_DIR)/operations.c
-OBJS    = $(SRCS:.c=.o)
+SRCS 	= $(wildcard $(SRC_DIR)/*.c)
+OBJS    = $(subst $(SRC_DIR)/,$(BUILD_DIR)/,$(SRCS:.c=.o))
 
 all : clean build
+
+run : $(TARGET)
+	@$^
 
 build : $(TARGET)
 
 $(TARGET) : $(OBJS)
+	mkdir -p $(@D)
 	gcc $^ -o $@
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
+	mkdir -p $(@D)
 	gcc -c $^ -I$(INC_DIR) -o $@
 
 clean :
-	rm -rf build/*
+	rm -rf build
 ```

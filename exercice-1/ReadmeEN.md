@@ -192,7 +192,7 @@ clean :
 There's one last problem we'd like to solve: for the target program, we end up having to list all the object files in the components. We would like to have a variable which automatically contains the object files.
 We therefore propose to create an SRCS variable containing all the source files and an OBJS variable containing all the OBJS files.
 
-**Question 17:** Create the variable SRCS by listing all the source files in it. Then create the OBJS variable by doing `OBJS = $(SRCS:.c=.o)` (This means that you take all the elements of SRCS and change the .c extension to .o). Modify the makefile accordingly.
+**Question 17:** Create the variable SRCS by listing all the source files in it. Then create the OBJS variable by doing `OBJS = $(subst $(SRC_DIR)/,$(BUILD_DIR)/,$(SRCS:.c=.o))` (This means that you take all the elements of SRCS and substitute the string SRC_DIR with BUILD_DIR and change the .c extension to .o). Modify the makefile accordingly.
 
 For the moment we have only shifted the problem: instead of having the list of object files in the target \$(BUILD_DIR)/program we have it in the SRCS variable. You can then use the `wildcard *` command, which lists all the elements in the current directory. To make SRCS contain all the source files in the src folder, just do `SRCS = $(wildcard $(SRC_DIR)/*.c)`.
 
@@ -202,23 +202,27 @@ You can even create a TARGET variable which contains the target (here \$(BUILD_D
 
 A nice makefile at the end of this exercise should look like the following:
 ```
-# Makefile for Exercice 1
 include path.mk
 
 TARGET  = $(BUILD_DIR)/program
-SRCS 	= $(BUILD_DIR)/main.c $(BUILD_DIR)/operations.c
-OBJS    = $(SRCS:.c=.o)
+SRCS 	= $(wildcard $(SRC_DIR)/*.c)
+OBJS    = $(subst $(SRC_DIR)/,$(BUILD_DIR)/,$(SRCS:.c=.o))
 
 all : clean build
+
+run : $(TARGET)
+	@$^
 
 build : $(TARGET)
 
 $(TARGET) : $(OBJS)
+	mkdir -p $(@D)
 	gcc $^ -o $@
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.c
+	mkdir -p $(@D)
 	gcc -c $^ -I$(INC_DIR) -o $@
 
 clean :
-	rm -rf build/*
+	rm -rf build
 ```
