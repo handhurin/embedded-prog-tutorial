@@ -1,83 +1,113 @@
+/* Entry Point */
 ENTRY(Reset_Handler)
 
-/* Highest address of the user mode stack */
-_estack = ORIGIN(SRAM) + LENGTH(SRAM); /* end of "RAM" Ram type memory */
-
-_Min_Heap_Size = 0x200 ; /* required amount of heap */
-_Min_Stack_Size = 0x400 ; /* required amount of stack */
-
+/* Memories definition */
 MEMORY
-{
-	FLASH(rx) : ORIGIN = 0x08000000, LENGTH = 128K
-	SRAM(rwx) : ORIGIN = 0x20000000, LENGTH = 20K
+{ 
+    FLASH  (rx)    : ORIGIN = 0x08000000,   LENGTH = 128K
+    RAM    (xrw)   : ORIGIN = 0x20000000,   LENGTH = 20K
 }
 
+/* Stack & Heap definitions */
+__stack_end__ = ORIGIN(RAM) + LENGTH(RAM);
+__Min_Heap_Size__ = 0x200;
+__Min_Stack_Size__ = 0x400;
+
+/* Variables used by FreeRTOS-MPU. */
+__privileged_functions_region_size__  = 64K;
+__privileged_data_region_size__       = 8K;
+
+__FLASH_segment_start__               = ORIGIN( FLASH );
+__FLASH_segment_end__                 = __FLASH_segment_start__ + LENGTH( FLASH );
+
+__SRAM_segment_start__                = ORIGIN( RAM );
+__SRAM_segment_end__                  = __SRAM_segment_start__ + LENGTH( RAM );
+
+/* Sections */
 SECTIONS
 {
-	.isr_vector :
-	{
-		. = ALIGN(4);
-		KEEP(*(.isr_vector)) /* Startup code */
-		. = ALIGN(4);
-	} >FLASH
+    /* The program goes into the .text section */
+    .text :
+    {
+        . = ALIGN(4);
+        __privileged_functions_start__ = .;
+        KEEP(*(.isr_vector))
+        . = ALIGN(4);
+        *(privileged_functions)
+        . = ALIGN(4);
+        FILL(0xDEAD);
+        . = __privileged_functions_start__ + __privileged_functions_region_size__;
+        __privileged_functions_end__ = .;
+        . = ALIGN(4);
+        __text_start__ = .;
+        __syscalls_flash_start__ = .;
+        *(freertos_system_calls)
+        __syscalls_flash_end__ = .;
+        . = ALIGN(4);
+        *(.text)
+        *(.text*)
+        . = ALIGN(4);
+        __text_end__ = .;
+    } >FLASH
 
-	.text :
-	{
-		. = ALIGN(4);
-		*(.text)
-		*(.text*)
-		. = ALIGN(4);
-		_etext = .;
-	} >FLASH
+    /* Constant data goes into .rodata section */
+    .rodata :
+    {
+        . = ALIGN(4);
+        __rodata_start__ = .;
+        *(.rodata)
+        *(.rodata*)
+        *(.static_conf_table)
+        . = ALIGN(4);
+        __rodata_end__ = .;
+    } >FLASH
 
-	.rodata :
-	{
-		. = ALIGN(4);
-		*(.rodata)         /* .rodata sections (constants, strings, etc.) */
-		*(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
-		. = ALIGN(4);
-	} >FLASH
-	
-	/* Utiliser dans le startup pour initialiser les datas*/
-	_sidata = LOADADDR(.data);
+    /* Used by the startup to initialize data */
+    __data_start_initialize__ = LOADADDR(.data);
 
-	.data :
-	{
-		. = ALIGN(4);
-		_sdata = .;
-		*(.data)
-		*(.data*)
-		. = ALIGN(4);
-		_edata = .;
-	} >SRAM AT> FLASH
+    /* Initialized data go into the .data section */
+    .data :
+    {
+        . = ALIGN(4);
+        __privileged_data_start__ = .;
+        __data_start__ = .;
+        *(privileged_data)
+        . = ALIGN(4);
+        FILL(0xDEAD);
+        . = __privileged_data_start__ + __privileged_data_region_size__;
+        __privileged_data_end__ = .;
+        . = ALIGN(4);
+        *(.data)
+        *(.data*)
+        *(.dynamic_conf_table)
+        . = ALIGN(4);
+        __data_end__ = .;
+    } >RAM AT> FLASH
 
-	.bss :
-	{
-		. = ALIGN(4);
-		_sbss = .;
-		__bss_start__ = _sbss;
-		*(.bss)
-		*(.bss*)
-		. = ALIGN(4);
-		_ebss = .;
-		__bss_end__ = _ebss;
-	} >SRAM
+    /* Uninitialised data goes into .bss section */
+    .bss (NOLOAD) :
+    {
+        . = ALIGN(4);
+        __bss_start__ = .;
+        *(.bss)
+        *(.bss*)
+        *(COMMON)
+        *(.task_stacks)
+        *(.buffer_data)
+        *(.tmpfs)
+        *(.dmabuff)
+        . = ALIGN(4);
+        __bss_end__ = .;
+    } >RAM
 
-	._user_heap_stack :
-	{
-		. = ALIGN(8);
-		PROVIDE ( end = . );
-		PROVIDE ( _end = . );
-		. = . + _Min_Heap_Size;
-		. = . + _Min_Stack_Size;
-		. = ALIGN(8);
-	} >SRAM
-
-	/* Remove information from the compiler libraries */
-	/DISCARD/ :
-	{
-		libc.a ( * )
-		libm.a ( * )
-		libgcc.a ( * )
-	}
+    /* Use of the rest of RAM for the stack and heap */
+    ._user_heap_stack :
+    {
+        . = ALIGN(8);
+        PROVIDE ( end = . );
+        PROVIDE ( _end = . );
+        . = . + __Min_Heap_Size__;
+        . = . + __Min_Stack_Size__;
+        . = ALIGN(8);
+    } >RAM
 }

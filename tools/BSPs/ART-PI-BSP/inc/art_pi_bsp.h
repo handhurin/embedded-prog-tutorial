@@ -75,6 +75,10 @@
 #define SPI_GENERIC_MOSI_PIN                    GPIO_PIN_6
 #define SPI_GENERIC_MOSI_GPIO_PORT              GPIOE
 
+/* SD CARD GPIO CONSTANTS */
+#define SD_GPIO_PIN                             GPIO_PIN_4
+#define SD_GPIO_PORT                            GPIOE
+
 /* ONE WIRE CONSTANTS */
 #define ONEWIRE_PIN                             GPIO_PIN_15
 #define ONEWIRE_GPIO_PORT                       GPIOA
