@@ -29,7 +29,7 @@ iicInst_t iic_inst = {
 uartInst_t uart_generic_inst = {
     .uart_ref = UART_GENERIC,
     .drive_type = UART_POLLING_DRIVE,
-    .baud_rate = 115200,
+    .baudrate = 115200,
 };
 
 /**
@@ -39,7 +39,7 @@ uartInst_t uart_generic_inst = {
 uartInst_t uart_print_inst = {
     .uart_ref = UART_PRINT,
     .drive_type = UART_POLLING_DRIVE,
-    .baud_rate = 115200,
+    .baudrate = 115200,
 };
 
 /**

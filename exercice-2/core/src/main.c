@@ -38,7 +38,7 @@ int main(void)
     {
         (void)GpioToggle(&led_inst);
         (void)printf("Hello \n");
-        HAL_Delay(500);
+        HalDelay(200);
     }
 
     return 0;

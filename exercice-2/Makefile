@@ -5,8 +5,8 @@
 ##############################################
 
 PROJ_NAME = exercice-2
-BOARD = NUCLEO_H745ZI
-LOAD_MEMORY = flash
+BOARD = ART_PI
+LOAD_MEMORY = ram
 VERSION = debug
 
 ##############################################

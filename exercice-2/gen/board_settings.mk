@@ -1,23 +1,48 @@
 # Makefile with board parameters
 
 #################################
+############# ART_PI ############
+#################################
+ifeq ($(BOARD), ART_PI)
+# Chip Information
+CHIP_VENDOR = ST
+CHIP_FAMILLY = STM32H7xx
+CHIP = STM32H750xx
+MACH = cortex-m7
+CORE_SELECT = -DCORE_CM7
+FPU_TYPE = -mfpu=fpv5-d16 -mfloat-abi=hard
+FPU_AVAILABILITY = FPU_AVAILABLE
+CACHE_AVAILABILITY = CACHE_AVAILABLE
+ECC_AVAILABILITY = ECC_UNAVAILABLE
+# Debugger Information
+OCD_DBG = interface/stlink.cfg
+OCD_CHIP = target/stm32h7x.cfg
+# HAL & BSP Information
+HAL_SRCS_LIST = $(CONF_HALS_DIR)/stm32h7xx_hal_conf.mk
+BSP_DIR = $(BSPs_DIR)/ART-PI-BSP
+LINKER_SCRIPT = $(BSP_DIR)/stm32h750xb_$(LOAD_MEMORY).ld
+
+#################################
 ######### NUCLEO_H745ZI #########
 #################################
-ifeq ($(BOARD), NUCLEO_H745ZI)
+else ifeq ($(BOARD), NUCLEO_H745ZI)
 # Chip Information
 CHIP_VENDOR = ST
 CHIP_FAMILLY = STM32H7xx
 CHIP = STM32H745xx
 MACH = cortex-m7
 CORE_SELECT = -DCORE_CM7
-FPU_SETTINGS = -DFPU_AVAILABLE -mfpu=fpv5-d16 -mfloat-abi=hard
+FPU_TYPE = -mfpu=fpv5-d16 -mfloat-abi=hard
+FPU_AVAILABILITY = FPU_AVAILABLE
+CACHE_AVAILABILITY = CACHE_AVAILABLE
+ECC_AVAILABILITY = ECC_UNAVAILABLE
 # Debugger Information
 OCD_DBG = interface/stlink.cfg
 OCD_CHIP = target/stm32h7x.cfg
 # HAL & BSP Information
 HAL_SRCS_LIST = $(CONF_HALS_DIR)/stm32h7xx_hal_conf.mk
-LINKER_SCRIPT = $(BSP_DIR)/stm32h745zi_$(LOAD_MEMORY).ld
 BSP_DIR = $(BSPs_DIR)/NUCLEO-H745ZI-BSP
+LINKER_SCRIPT = $(BSP_DIR)/stm32h745zi_$(LOAD_MEMORY).ld
 
 #################################
 ######### NUCLEO_F411RE #########
@@ -29,7 +54,10 @@ CHIP_FAMILLY = STM32F4xx
 CHIP = STM32F411xE
 MACH = cortex-m4
 CORE_SELECT =
-FPU_SETTINGS = -DFPU_AVAILABLE -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+FPU_TYPE = -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+FPU_AVAILABILITY = FPU_AVAILABLE
+CACHE_AVAILABILITY = CACHE_UNAVAILABLE
+ECC_AVAILABILITY = ECC_UNAVAILABLE
 # Debugger Information
 OCD_DBG = interface/stlink.cfg
 OCD_CHIP = target/stm32f4x.cfg
@@ -48,7 +76,10 @@ CHIP_FAMILLY = STM32F4xx
 CHIP = STM32F407xx
 MACH = cortex-m4
 CORE_SELECT =
-FPU_SETTINGS = -DFPU_AVAILABLE -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+FPU_TYPE = -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+FPU_AVAILABILITY = FPU_AVAILABLE
+CACHE_AVAILABILITY = CACHE_UNAVAILABLE
+ECC_AVAILABILITY = ECC_UNAVAILABLE
 # Debugger Information
 OCD_DBG = interface/stlink.cfg
 OCD_CHIP = target/stm32f4x.cfg
@@ -67,7 +98,10 @@ CHIP_FAMILLY = STM32F1xx
 CHIP = STM32F103xB
 MACH = cortex-m3
 CORE_SELECT =
-FPU_SETTINGS = -DFPU_UNAVAILABLE -mfloat-abi=soft
+FPU_TYPE = -mfloat-abi=soft
+FPU_AVAILABILITY = FPU_UNAVAILABLE
+CACHE_AVAILABILITY = CACHE_UNAVAILABLE
+ECC_AVAILABILITY = ECC_UNAVAILABLE
 # Debugger Information
 OCD_DBG = interface/stlink.cfg
 OCD_CHIP = target/stm32f1x.cfg

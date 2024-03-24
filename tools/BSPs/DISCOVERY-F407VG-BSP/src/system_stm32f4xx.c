@@ -94,20 +94,19 @@
 #define USER_VECT_TAB_ADDRESS
 
 #if defined(USER_VECT_TAB_ADDRESS)
-/*!< Uncomment the following line if you need to relocate your vector Table
-     in Sram else user remap will be done in Flash. */
-/* #define VECT_TAB_SRAM */
-#if defined(VECT_TAB_SRAM)
+#if defined(LOAD_RAM)
 #define VECT_TAB_BASE_ADDRESS   SRAM_BASE       /*!< Vector Table base address field.
                                                      This value must be a multiple of 0x200. */
 #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
                                                      This value must be a multiple of 0x200. */
-#else
+#elif defined(LOAD_FLASH)
 #define VECT_TAB_BASE_ADDRESS   FLASH_BASE      /*!< Vector Table base address field.
                                                      This value must be a multiple of 0x200. */
 #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
                                                      This value must be a multiple of 0x200. */
-#endif /* VECT_TAB_SRAM */
+#else
+#error Please #define LOAD_RAM or LOAD_FLASH
+#endif /* LOAD_RAM */
 #endif /* USER_VECT_TAB_ADDRESS */
 /******************************************************************************/
 

@@ -7,12 +7,14 @@
  * @copyright Copyright (c) TOLOSAT & Merlin Kooshmanian 2024
  */
 
-#ifndef generic_hal_H
-#define generic_hal_H
+#ifndef GENERIC_HAL_H
+#define GENERIC_HAL_H
 
 /******************************* Include Files *******************************/
 
-#if defined(NUCLEO_H745ZI)
+#if defined(ART_PI)
+#include "art_pi_bsp.h"
+#elif defined(NUCLEO_H745ZI)
 #include "nucleo_h745zi_bsp.h"
 #elif defined(NUCLEO_F411RE)
 #include "nucleo_f411re_bsp.h"
@@ -32,6 +34,7 @@
 #include "generic_hal_spi.h"
 #include "generic_hal_ow.h"
 #include "generic_hal_rtc.h"
+#include "generic_hal_ecc.h"
 
 /***************************** Macros Definitions ****************************/
 
@@ -41,4 +44,4 @@
 
 /*************************** Functions Declarations **************************/
 
-#endif /* generic_hal_H */
+#endif /* GENERIC_HAL_H */
